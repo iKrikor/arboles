@@ -7,9 +7,32 @@
 //
 
 #include <iostream>
+#include "BinarySTree.h"
+#include "AVLTree.h"
+
+using namespace std;
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+
+    
+    BinarySTree<int> numeros;
+    
+    numeros.insert(6);
+    numeros.insert(2);
+    numeros.insert(5);
+    numeros.insert(1);
+    numeros.insert(100);
+    
+    cout<<numeros.getDepth()<<endl;
+    
+    
+    numeros.inOrder();
+    cout<<endl;
+
+    
+    if (numeros.search(3)) {
+        cout<<"Esta"<<endl;
+    }
+    
     return 0;
 }

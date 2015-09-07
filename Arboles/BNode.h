@@ -15,7 +15,7 @@
     
     template <class T>
     class BNode {
-        
+    protected:
         BNode<T> * parent = nullptr;
         BNode<T> * left = nullptr;
         BNode<T> * right = nullptr;
