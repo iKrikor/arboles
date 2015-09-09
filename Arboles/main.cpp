@@ -18,7 +18,7 @@ int main(int argc, const char * argv[]) {
     AVLTree<int> numeros;
     
     for(int i=0; i<10000; i++){
-        numeros.insert(rand()%1000);
+        numeros.insert(rand()%10000);
     }
     
     

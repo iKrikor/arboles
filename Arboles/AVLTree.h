@@ -127,6 +127,9 @@ void AVLTree<T>::rl_rotation(BNode<T> * pivot){
 template <class T>
 void AVLTree<T>::insert(BNode<T> * parent, BNode<T> * node){
     
+    
+    
+    
     if (this->empty())
     {
         this->setRoot(node);
@@ -146,7 +149,7 @@ void AVLTree<T>::insert(BNode<T> * parent, BNode<T> * node){
                 insert(parent->getLeft(), node);
             }
         }
-        else
+        else if(node->getInfo() > parent->getInfo())
         {
             if (parent->getRight() == nullptr)
             {
@@ -157,6 +160,8 @@ void AVLTree<T>::insert(BNode<T> * parent, BNode<T> * node){
             {
                 insert(parent->getRight(), node);
             }
+        } else {
+            return;
         }
         
         
