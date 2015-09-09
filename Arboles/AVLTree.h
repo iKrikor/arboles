@@ -9,367 +9,305 @@
 #ifndef AVLTree_h
 #define AVLTree_h
 
-#include "AVLNode.h"
+#include "BinarySTree.h"
+
 
 
 template <class T>
-class AVLTree {
-    AVLNode<T> * root = nullptr;
-    
+class AVLTree : public BinarySTree<T>{
     
 public:
     AVLTree(){}
     ~AVLTree();
     
-    
-    bool empty();
-    
-    void clear();
-    void clear(AVLNode<T> * node);
-    
-    AVLNode<T> * getRoot() const;
-    void setRoot(AVLNode<T> * node);
-    
-    void rRotate(AVLNode<T> * y);
-    void lRotate(AVLNode<T> * x);
-    
+    void l_rotation(BNode<T> * node);
+    void r_rotation(BNode<T> * node);
+    void lr_rotation(BNode<T> * node);
+    void rl_rotation(BNode<T> * node);
+    bool isAVL(BNode<T> * node);
+    void insert(BNode<T> * parent, BNode<T> * node);
     void insert(T value);
-    void insert(AVLNode<T> * parent, AVLNode<T> * node);
+    void remove(T value);
     
-    void preOrder() const;
-    void preOrder(AVLNode<T> * node) const;
+    BNode<T> * getMaxMin(BNode<T> * node) const;
+    BNode<T> * getMaxMin() const;
     
-    
-    void inOrder() const;
-    void inOrder(AVLNode<T> * node) const;
-    
-    void postOrder() const;
-    void postOrder(AVLNode<T> * node) const;
-    
-    void isLeaf() const;
-    void isLeaf(AVLNode<T> * node) const;
-    
-    void ancestors(AVLNode<T> * node) const;
-    
-    int getHeight() const;
-    int getHeight(AVLNode<T> * node) const ;
-    
-    int getDepth() const;
-    int getDepth(AVLNode<T> * node) const;
-    
-    int getLevel() const;
-    int getLevel(AVLNode<T> * node) const;
-    
-    int getBalanceFactor() const;
-    int getBalanceFactor(AVLNode<T> * node) const ;
-    
-    int maxHeight(int leftHeight, int rightHeight){
-        if(leftHeight > rightHeight){
-            return leftHeight;
-        }else{
-            return rightHeight;
-        }
-    }
 };
 
+template <class T>
+AVLTree<T>::~AVLTree(){
     
-    template <class T>
-    void AVLTree<T>::rRotate(AVLNode<T> * y){
-        AVLNode<T> * x = y->getRight();
-        AVLNode<T> * temp = x->getRight();
-        
-        x->setRight(y);
-        y->setLeft(temp);
-        
-        y->setHeight(maxHeight(y->getLeft()->getHeight(), y->getRight()->getHeight()) + 1);
-        x->setHeight(maxHeight(x->getLeft()->getHeight(), x->getRight()->getHeight()) + 1);
-        
-    }
+}
+
+template <class T>
+bool AVLTree<T>::isAVL(BNode<T> * node){
     
-    
-    template <class T>
-    void AVLTree<T>::lRotate(AVLNode<T> * x){
-        AVLNode<T> * y = x->getRight();
-        AVLNode<T> * temp = y->getLeft();
-        
-        x->setLeft(x);
-        y->setRight(temp);
-        
-        
-        x->setHeight(maxHeight(x->getLeft()->getHeight(), x->getRight()->getHeight()) + 1);
-        y->setHeight(maxHeight(y->getLeft()->getHeight(), y->getRight()->getHeight()) + 1);
+        if (node)
+        {
+            if (abs(this->getBalanceFactor(node)) > 1 )
+            {
+                return false;
+            }
+            return  isAVL(node->getRight()) && isAVL(node->getLeft());
+        }
+        else
+        {
+            return true;
+        }
 
     }
 
 template <class T>
-void AVLTree<T>::insert(T value){
-    AVLNode<T> * node = new AVLNode<T>(value);
-    insert(root, node);
+void AVLTree<T>::r_rotation(BNode<T> * pivot){
+    //Rotar hacia la derecha al rededor del padre de node
+    BNode<T> * temp = pivot->getLeft();
+    
+    
+    if(pivot->getParent() && pivot->getInfo() <= pivot->getParent()->getInfo() ){
+        pivot->getParent()->setLeft(temp);
+    }else if (pivot->getParent()){
+        pivot->getParent()->setRight(temp);
+    }else{
+        this->setRoot(temp);
+    }
+    
+    temp->setParent(pivot->getParent());
+    pivot->setParent(temp);
+    
+    pivot->setLeft(temp->getRight());
+    
+    temp->setRight(pivot);
+    
+    if(pivot->getLeft())
+    pivot->getLeft()->setParent(pivot);
+    
 }
 
+template <class T>
+void AVLTree<T>::l_rotation(BNode<T> * pivot){
+    //Rotar hacia la izquierda alrededor del padre de node
+    BNode<T> * temp = pivot->getRight();
+    
+    if(pivot->getParent() && pivot->getInfo() <= pivot->getParent()->getInfo() ){
+        pivot->getParent()->setLeft(temp);
+    }else if (pivot->getParent()){
+        pivot->getParent()->setRight(temp);
+    }else{
+        this->setRoot(temp);
+    }
+    
+    temp->setParent(pivot->getParent());
+    pivot->setParent(temp);
+    
+    pivot->setRight(temp->getLeft());
+    
+    temp->setLeft(pivot);
+    
+    if(pivot->getRight())
+    pivot->getRight()->setParent(pivot);
+    
+}
 
-    template <class T>
-    void AVLTree<T>::insert(AVLNode<T> * parent, AVLNode<T> * node){
-        if (empty())
+template <class T>
+void AVLTree<T>::lr_rotation(BNode<T> * pivot){
+    //Rotar hacia la izquierda alrededor de node y rotar hacia la derecha alrededor del padre de node
+     BNode<T> * temp = pivot->getRight();
+    l_rotation(pivot);
+    r_rotation(temp->getParent());
+}
+
+template <class T>
+void AVLTree<T>::rl_rotation(BNode<T> * pivot){
+    //Rotar hacia la derecha alrededor de node y rotar hacia la izquierda alrededor del padre de node
+    BNode<T> * temp = pivot->getLeft();
+    r_rotation(pivot);
+    l_rotation(temp->getParent());
+}
+
+template <class T>
+void AVLTree<T>::insert(BNode<T> * parent, BNode<T> * node){
+    
+    if (this->empty())
+    {
+        this->setRoot(node);
+    }
+    else
+    {
+        if(node->getInfo() < parent->getInfo())
         {
-            setRoot(node);
-        }
-        else
-        {
-            if(node->getInfo() < parent->getInfo())
+            
+            if (parent->getLeft() == nullptr)
             {
-                
-                if (parent->getLeft() == nullptr)
-                {
-                    parent->setLeft(node);
-                    node->setParent(parent);
-                }
-                else
-                {
-                    insert(parent->getLeft(), node);
-                }
+                parent->setLeft(node);
+                node->setParent(parent);
             }
             else
             {
-                if (parent->getRight() == nullptr)
-                {
-                    parent->setRight(node);
-                    node->setParent(parent);
-                }
-                else
-                {
-                    insert(parent->getRight(), node);
-                }
+                insert(parent->getLeft(), node);
             }
-        }
-        
-        parent->setHeight(maxHeight(parent->getLeft()->getHeight(), parent->getRight()->getHeight()) + 1);
-        
-        int balance = getBalanceFactor(parent);
-        
-        if(balance > 1 && node->getInfo()< parent->getLeft()->getInfo()){
-            rRotate(parent);
-        }
-        
-        if(balance<-1 && node->getInfo()> parent->getRight()->getInfo()){
-            lRotate(parent);
-        }
-        
-        if(balance > 1 && node->getInfo()> parent->getLeft()->getInfo()){
-            
-            rRotate(parent);
-        }
-        
-        if(balance<-1 && node->getInfo()< parent->getRight()->getInfo()){
-            lRotate(parent);
-        }
-
-        
-    }
-    
-    template <class T>
-    AVLTree<T>::~AVLTree()
-    {
-        clear();
-    }
-    
-    template <class T>
-    bool AVLTree<T>::empty()
-    {
-        return root == nullptr;
-    }
-    
-    template <class T>
-    void AVLTree<T>::clear()
-    {
-        clear(root);
-    }
-    
-    template <class T>
-    void AVLTree<T>::clear(AVLNode<T> * node)
-    {
-        if (node) {
-            clear(node->getLeft());
-            clear(node->getRight());
-            
-            delete node;
-        }
-    }
-    
-    template <class T>
-    AVLNode<T> * AVLTree<T>::getRoot() const
-    {
-        return root;
-    }
-    
-    template <class T>
-    void AVLTree<T>::setRoot(AVLNode<T> * node)
-    {
-        if (!empty()) {
-            node->setLeft(root);
-            root->setParent(node);
-            root = node;
-        }
-        else {
-            root = node;
-        }
-    }
-
-    
-    template <class T>
-    void AVLTree<T>::preOrder() const
-    {
-        preOrder(root);
-    }
-    
-    template <class T>
-    void AVLTree<T>::preOrder(AVLNode<T> * node) const
-    {
-        if (node) {
-            /* Procesar el nodo */
-            std::cout << *node << std::endl;
-            
-            /* Invocar a los hijos */
-            preOrder(node->getLeft());
-            preOrder(node->getRight());
-            
-        }
-    }
-    
-    template <class T>
-    void AVLTree<T>::inOrder() const
-    {
-        inOrder(root);
-    }
-    
-    template <class T>
-    void AVLTree<T>::inOrder(AVLNode<T> * node) const
-    {
-        if (node) {
-            
-            /* Invocar al hijo izquierdo */
-            inOrder(node->getLeft());
-            
-            /* Procesar el nodo */
-            std::cout << *node << std::endl;
-            
-            /* Invocar al hijo derecho */
-            inOrder(node->getRight());
-        }
-    }
-    
-    template <class T>
-    void AVLTree<T>::postOrder() const
-    {
-        postOrder(root);
-    }
-    
-    template <class T>
-    void AVLTree<T>::postOrder(AVLNode<T> * node) const
-    {
-        if (node) {
-            /* Invocar a los hijos */
-            postOrder(node->getLeft());
-            postOrder(node->getRight());
-            
-            /* Procesar el nodo */
-            std::cout << *node << std::endl;
-        }
-    }
-    
-    template <class T>
-    void AVLTree<T>::isLeaf() const
-    {
-        isLeaf(root);
-    }
-    
-    template <class T>
-    void AVLTree<T>::isLeaf(AVLNode<T> * node) const
-    {
-        if (node) {
-            if (!node->getLeft() && !node->getRight()) {
-                std::cout << *node << std::endl;
-            }
-            else {
-                isLeaf(node->getLeft());
-                isLeaf(node->getRight());
-            }
-        }
-    }
-    
-    template <class T>
-    void AVLTree<T>::ancestors(AVLNode<T> * node) const
-    {
-        if (node) {
-            std::cout << *node << " -> ";
-            ancestors(node->getParent());
-        }
-    }
-    
-    template <class T>
-    int AVLTree<T>::getHeight() const
-    {
-        return getHeight(root);
-    }
-    
-    template <class T>
-    int AVLTree<T>::getHeight(AVLNode<T> * node) const
-    {
-        if (node == nullptr)
-        {
-            return 0;
         }
         else
         {
-            node->getHeight();
+            if (parent->getRight() == nullptr)
+            {
+                parent->setRight(node);
+                node->setParent(parent);
+            }
+            else
+            {
+                insert(parent->getRight(), node);
+            }
         }
+        
+        
+        if(this->getBalanceFactor(parent->getParent()) == -2 && this->getBalanceFactor(parent->getParent()->getLeft())== -1){
+            r_rotation(parent->getParent());
+//        std::cout<<"R"<<std::endl;
+        }
+        if(this->getBalanceFactor(parent->getParent()) == -2 && this->getBalanceFactor(parent->getParent()->getLeft())== 1){
+            lr_rotation(parent);
+//        std::cout<<"LR"<<std::endl;
+        }
+        if(this->getBalanceFactor(parent->getParent()) == 2 && this->getBalanceFactor(parent->getParent()->getRight())== 1){
+            l_rotation(parent->getParent());
+//        std::cout<<"L"<<std::endl;
+        }
+        if( (this->getBalanceFactor(parent->getParent()) == 2 && this->getBalanceFactor(parent->getParent()->getRight())== -1)){
+            rl_rotation(parent);
+//        std::cout<<"RL"<<std::endl;
+        }
+        
+    }
+    
+    }
+
+
+template <class T>
+void AVLTree<T>::insert(T value){
+    BNode<T> * node = new BNode<T>(value);
+    insert(this->root, node);
+}
+
+template <class T>
+void AVLTree<T>::remove(T value){
+    BNode<T> * node = this->search(value);
+    
+    if(node){
+        
+    
+    BNode<T> * parent = node->getParent();
+    BNode<T> * nnode = getMaxMin(node);
+    
+    if(nnode){
+        nnode->setRight(node->getRight());
+        if(nnode->getRight())
+        nnode->getRight()->setParent(nnode);
+    nnode->getParent()->setRight(nnode->getLeft());
+    nnode->setParent(node->getParent());
+        
+
+        
+        
+        if(node->getLeft() == nnode){
+            if(!nnode->getLeft())
+            nnode->setLeft(nullptr);
+        }
+        else{
+        nnode->setLeft(node->getLeft());
+        }
+        
+    
+    
+    }
+    
+    if(!node->getParent()){
+        BinaryTree<T>::setRoot(nnode);
+    }else if(node->getInfo() <= node->getParent()->getInfo()){
+        node->getParent()->setLeft(nnode);
+    } else{
+        node->getParent()->setRight(nnode);
     }
 
     
-    template <class T>
-    int AVLTree<T>::getDepth() const
-    {
-        return getDepth(root);
-    }
+    delete node;
+        
     
-    template <class T>
-    int AVLTree<T>::getDepth(AVLNode<T> * node) const
-    {
-        if (node == nullptr)
-        {
-            return 0;
-        }
-        else
-        {
-            return getDepth(node->getParent()) + 1;
-        }
+    if(this->getBalanceFactor(parent) == -2 && this->getBalanceFactor(parent->getLeft()) == -1){
+        r_rotation(parent);
+//        std::cout<<"R"<<std::endl;
     }
-    
-    template <class T>
-    int AVLTree<T>::getLevel() const
-    {
-        return getLevel(root);
+    if(this->getBalanceFactor(parent) == -2 && this->getBalanceFactor(parent->getLeft())== 1){
+        lr_rotation(parent->getLeft());
+//        std::cout<<"LR"<<std::endl;
     }
-    
-    template <class T>
-    int AVLTree<T>::getLevel(AVLNode<T> * node) const
-    {
-        return getDepth(node) +1;
+    if(this->getBalanceFactor(parent) == 2 && this->getBalanceFactor(parent->getRight())== 1){
+        l_rotation(parent);
+//        std::cout<<"L"<<std::endl;
     }
-    
-    template <class T>
-    int AVLTree<T>::getBalanceFactor() const
-    {
-        return getBalanceFactor(root);
+    if( (this->getBalanceFactor(parent) == 2 && this->getBalanceFactor(parent->getRight())== -1)){
+        rl_rotation(parent->getRight());
+//        std::cout<<"RL"<<std::endl;
     }
-    
-    template <class T>
-    int AVLTree<T>::getBalanceFactor(AVLNode<T> * node) const
-    {
-        return  getHeight(node->getLeft()) - getHeight(node->getRight());
-    } 
+           parent =  parent->getParent();
+        
 
+        if(this->getBalanceFactor(nnode) == -2 && this->getBalanceFactor(nnode->getLeft()) == -1){
+            r_rotation(nnode);
+//            std::cout<<"R"<<std::endl;
+        }
+        if(this->getBalanceFactor(nnode) == -2 && this->getBalanceFactor(nnode->getLeft())== 1){
+            lr_rotation(nnode->getLeft());
+//            std::cout<<"LR"<<std::endl;
+        }
+        if(this->getBalanceFactor(nnode) == 2 && this->getBalanceFactor(nnode->getRight())== 1){
+            l_rotation(nnode);
+//            std::cout<<"L"<<std::endl;
+        }
+        if( (this->getBalanceFactor(nnode) == 2 && this->getBalanceFactor(nnode->getRight())== -1)){
+            rl_rotation(nnode->getRight());
+//            std::cout<<"RL"<<std::endl;
+        }
+
+
+        
+
+        
+    }
+
+}
+
+template <class T>
+BNode<T> * AVLTree<T>::getMaxMin() const
+{
+    return getMaxMin(this->root);
+}
+
+
+template <class T>
+BNode<T> * AVLTree<T>::getMaxMin(BNode<T> * node) const
+{
+    if (node)
+        {
+            BNode<T> * workingNode = node->getLeft();
+            if(workingNode){
+            while (workingNode->getRight() != nullptr)
+                {
+                    workingNode = workingNode->getRight();
+                }
+           return workingNode;
+            }
+            return nullptr;
+            
+        } else{
+            return nullptr;
+        }
     
+}
+
+
+
+
+
 
 
 

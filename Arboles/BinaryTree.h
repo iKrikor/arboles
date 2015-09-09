@@ -10,6 +10,8 @@
 #define BinaryTree_BinaryTree_h
 
 #include "BNode.h"
+#include <iomanip>
+#include <iostream>
 
 
     template <class T>
@@ -29,12 +31,9 @@
         BNode<T> * getRoot() const;
         void setRoot(BNode<T> * node);
         
-        virtual bool insert(BNode<T> * parent, T value);
-        virtual bool insert(BNode<T> * parent, BNode<T> * value);
         
-        
-        virtual void insertO(T value);
-        virtual void insertO(BNode<T> * parent, BNode<T> * node);
+        virtual void insert(T value);
+        virtual void insert(BNode<T> * parent, BNode<T> * node);
         
         
         void preOrder() const;
@@ -64,8 +63,29 @@
         int getBalanceFactor() const;
         int getBalanceFactor(BNode<T> * node) const ;
         
+        
+        void prettyPrint(BNode<T>* p, int indent)
+        {
+            if(p != NULL) {
+                if(p->getRight()) {
+                    prettyPrint(p->getRight(), indent+4);
+                }
+                if (indent) {
+                    std::cout << std::setw(indent) << ' ';
+                }
+                if (p->getRight()) std::cout<<" /\n" << std::setw(indent) << ' ';
+                std::cout<< p->getInfo() << "\n ";
+                if(p->getLeft()) {
+                    std::cout << std::setw(indent) << ' ' <<" \\\n";
+                    prettyPrint(p->getLeft(), indent+4);
+                }
+                
+            }
+        }
+        
     };
-    
+
+
     template <class T>
     BinaryTree<T>::~BinaryTree()
     {
@@ -104,61 +124,20 @@
     template <class T>
     void BinaryTree<T>::setRoot(BNode<T> * node)
     {
-        if (!empty()) {
-            node->setLeft(root);
-            root->setParent(node);
             root = node;
-        }
-        else {
-            root = node;
-        }
     }
     
-    template <class T>
-    bool BinaryTree<T>::insert(BNode<T> * parent, T value)
-    {
-        BNode<T> * node = new BNode<T>(value);
-        bool inserted = insert(parent, node);
-        
-        if (!inserted) delete node;
-        
-        return inserted;
-    }
-    
-    template <class T>
-    bool BinaryTree<T>::insert(BNode<T> * parent, BNode<T> * value)
-    {
-        bool inserted = false;
-        
-        if (empty() || !parent) {
-            setRoot(value);
-            inserted = true;
-        }
-        else {
-            if (!parent->getLeft()) {
-                parent->setLeft(value);
-                value->setParent(parent);
-                inserted = true;
-            }
-            else if (!parent->getRight()) {
-                parent->setRight(value);
-                value->setParent(parent);
-                inserted = true;
-            }
-        }
-        
-        return inserted;
-    }
+
 
 
 template <class T>
-void BinaryTree<T>::insertO(T value){
+void BinaryTree<T>::insert(T value){
     BNode<T> * node = new BNode<T>(value);
-    insertO(this->root, node);
+    insert(this->root, node);
 }
 
 template <class T>
-void BinaryTree<T>::insertO(BNode<T> * parent, BNode<T> * node){
+void BinaryTree<T>::insert(BNode<T> * parent, BNode<T> * node){
     if (empty())
     {
         setRoot(node);
@@ -175,7 +154,7 @@ void BinaryTree<T>::insertO(BNode<T> * parent, BNode<T> * node){
             }
             else
             {
-                insertO(parent->getLeft(), node);
+                insert(parent->getLeft(), node);
             }
         }
         else
@@ -187,7 +166,7 @@ void BinaryTree<T>::insertO(BNode<T> * parent, BNode<T> * node){
             }
             else
             {
-                insertO(parent->getRight(), node);
+                insert(parent->getRight(), node);
             }
         }
     }
@@ -296,18 +275,14 @@ int BinaryTree<T>::getHeight(BNode<T> * node) const
 {
     if (node == nullptr)
     {
-        return 0;
+        return -1;
     }
     else
     {
         int leftCount = getHeight(node->getLeft());
         int rightCount = getHeight(node->getRight());
         
-        if (leftCount == 0 && rightCount == 0)
-        {
-            return 0;
-        }
-        else if (leftCount <= rightCount)
+        if (leftCount <= rightCount)
         {
             return rightCount +1;
         }
@@ -315,25 +290,6 @@ int BinaryTree<T>::getHeight(BNode<T> * node) const
         {
             return leftCount +1;
         }
-    }
-}
-
-template <class T>
-int BinaryTree<T>::getDepth() const
-{
-    return getDepth(root);
-}
-
-template <class T>
-int BinaryTree<T>::getDepth(BNode<T> * node) const
-{
-    if (node == nullptr)
-    {
-        return 0;
-    }
-    else
-    {
-        return getDepth(node->getParent()) + 1;
     }
 }
 
@@ -346,7 +302,26 @@ int BinaryTree<T>::getLevel() const
 template <class T>
 int BinaryTree<T>::getLevel(BNode<T> * node) const
 {
-    return getDepth(node) +1;
+    if (node == nullptr)
+    {
+        return 0;
+    }
+    else
+    {
+        return getLevel(node->getParent()) + 1;
+    }
+}
+
+template <class T>
+int BinaryTree<T>::getDepth() const
+{
+    return getDepth(root);
+}
+
+template <class T>
+int BinaryTree<T>::getDepth(BNode<T> * node) const
+{
+    return getLevel(node) - 1;
 }
 
 template <class T>
@@ -358,8 +333,13 @@ int BinaryTree<T>::getBalanceFactor() const
 template <class T>
 int BinaryTree<T>::getBalanceFactor(BNode<T> * node) const
 {
-    return getHeight(node->getRight()) - getHeight(node->getLeft());
-} 
+    if (node)
+    {
+        return getHeight(node->getRight()) - getHeight(node->getLeft());
+    }
+    return 0;
+}
+
 
 
 #endif

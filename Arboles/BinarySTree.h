@@ -19,9 +19,8 @@ public:
     BinarySTree();
     ~BinarySTree();
     
-    void insert(T value);
-    bool search(const T value) const;
-    bool search(const T value, BNode<T> * node) const;
+    BNode<T> * search(const T value) const;
+    BNode<T> * search(const T value, BNode<T> * node) const;
 };
 
 template <class T>
@@ -34,26 +33,22 @@ BinarySTree<T>::~BinarySTree()
 }
 
 template <class T>
-void BinarySTree<T>::insert(T value){
-    this->insertO(value);
-}
-template <class T>
-bool BinarySTree<T>::search(const T value) const{
+BNode<T> * BinarySTree<T>::search(const T value) const{
     return search(value, this->root);
 
 }
 
 template <class T>
-bool BinarySTree<T>::search(const T value, BNode<T> * node)const {
+BNode<T> * BinarySTree<T>::search(const T value, BNode<T> * node)const {
     if (node == nullptr)
     {
-        return false;
+        return nullptr;
     }
     else {
         T value2 = node->getInfo();
         if (value == value2)
         {
-            return true;
+            return node;
         }
         else if (value < value2)
         {

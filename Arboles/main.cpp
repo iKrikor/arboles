@@ -15,24 +15,40 @@ using namespace std;
 int main(int argc, const char * argv[]) {
 
     
-    BinarySTree<int> numeros;
+    AVLTree<int> numeros;
     
-    numeros.insert(6);
-    numeros.insert(2);
-    numeros.insert(5);
-    numeros.insert(1);
-    numeros.insert(100);
-    
-    cout<<numeros.getDepth()<<endl;
-    
-    
-    numeros.inOrder();
-    cout<<endl;
-
-    
-    if (numeros.search(3)) {
-        cout<<"Esta"<<endl;
+    for(int i=0; i<10000; i++){
+        numeros.insert(rand()%1000);
     }
     
+    
+    
+     numeros.prettyPrint(numeros.getRoot(), 0);
+    
+    cout<<endl;
+    cout<<endl;
+    cout<<endl;
+    cout<<endl;
+    
+    if(numeros.isAVL(numeros.getRoot()))
+        cout<<"ES AVL"<<endl;
+    
+    
+    numeros.remove(26);
+
+    
+    numeros.prettyPrint(numeros.getRoot(), 0);
+    
+    
+    if(numeros.isAVL(numeros.getRoot()))
+        cout<<"ES AVL"<<endl;
+    
+    
+ 
+    
+
+
+    
+       
     return 0;
 }
