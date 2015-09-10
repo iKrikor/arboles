@@ -9,6 +9,7 @@
 #include <iostream>
 #include "BinarySTree.h"
 #include "AVLTree.h"
+#include <chrono>
 
 using namespace std;
 
@@ -31,6 +32,9 @@ int main(int argc, const char * argv[]) {
         
     }
     
+    
+    
+     auto begin = std::chrono::high_resolution_clock::now();
     for(int i=0; i<10; i++){
 //        cout<<array[i]<<endl;
         BNode<int> * node =numeros.search(array[i]);
@@ -39,9 +43,12 @@ int main(int argc, const char * argv[]) {
         cout<<"Encontró " << *node<<endl;
         }
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    auto AVL = std::chrono::duration_cast<std::chrono::microseconds>(end-begin);
     
+    cout<<AVL.count()<<endl;
     
-    numeros.prettyPrint(numeros.getRoot(), 0);
+//    numeros.prettyPrint(numeros.getRoot(), 0);
     
     
     if(numeros.isAVL(numeros.getRoot()))
