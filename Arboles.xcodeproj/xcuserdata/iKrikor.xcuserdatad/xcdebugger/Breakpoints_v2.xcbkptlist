@@ -136,12 +136,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Arboles/AVLTree.h"
-            timestampString = "463521896.214755"
+            timestampString = "463539970.92389"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "insert(BNode&lt;T&gt; * parent, BNode&lt;T&gt; * node)"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "remove(T value)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -152,12 +152,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Arboles/AVLTree.h"
-            timestampString = "463521896.214755"
+            timestampString = "463539970.92389"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
-            landmarkName = "insert(BNode&lt;T&gt; * parent, BNode&lt;T&gt; * node)"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
+            landmarkName = "remove(T value)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -168,12 +168,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Arboles/AVLTree.h"
-            timestampString = "463521896.214755"
+            timestampString = "463539970.92389"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
-            landmarkName = "insert(BNode&lt;T&gt; * parent, BNode&lt;T&gt; * node)"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "remove(T value)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -184,12 +184,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Arboles/AVLTree.h"
-            timestampString = "463521896.214755"
+            timestampString = "463539970.92389"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "199"
-            endingLineNumber = "199"
-            landmarkName = "insert(BNode&lt;T&gt; * parent, BNode&lt;T&gt; * node)"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "remove(T value)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -200,12 +200,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Arboles/AVLTree.h"
-            timestampString = "463521896.214755"
+            timestampString = "463539970.92389"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
-            landmarkName = "insert(BNode&lt;T&gt; * parent, BNode&lt;T&gt; * node)"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
+            landmarkName = "remove(T value)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -216,12 +216,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Arboles/AVLTree.h"
-            timestampString = "463521896.214755"
+            timestampString = "463539970.92389"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "216"
-            endingLineNumber = "216"
-            landmarkName = "insert(BNode&lt;T&gt; * parent, BNode&lt;T&gt; * node)"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
+            landmarkName = "remove(T value)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -232,12 +232,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Arboles/AVLTree.h"
-            timestampString = "463521896.214755"
+            timestampString = "463539970.92389"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
-            landmarkName = "insert(BNode&lt;T&gt; * parent, BNode&lt;T&gt; * node)"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "remove(T value)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

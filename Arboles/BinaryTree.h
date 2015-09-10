@@ -42,6 +42,9 @@
         
         void inOrder() const;
         void inOrder(BNode<T> * node) const;
+        void reverseInOrder() const;
+        void reverseInOrder(BNode<T> * node) const;
+        
         
         void postOrder() const;
         void postOrder(BNode<T> * node) const;
@@ -151,6 +154,7 @@ void BinaryTree<T>::insert(BNode<T> * parent, BNode<T> * node){
             {
                 parent->setLeft(node);
                 node->setParent(parent);
+
             }
             else
             {
@@ -163,6 +167,7 @@ void BinaryTree<T>::insert(BNode<T> * parent, BNode<T> * node){
             {
                 parent->setRight(node);
                 node->setParent(parent);
+
             }
             else
             {
@@ -215,7 +220,22 @@ void BinaryTree<T>::insert(BNode<T> * parent, BNode<T> * node){
             inOrder(node->getRight());
         }
     }
+
+template <class T>
+void BinaryTree<T>::reverseInOrder() const{
+    reverseInOrder(root);
     
+}
+template <class T>
+void BinaryTree<T>::reverseInOrder(BNode<T> * node) const{
+    
+     if (node) {
+    reverseInOrder(node->getRight());
+    std::cout << *node << std::endl;
+    reverseInOrder(node->getLeft());
+     }
+}
+
     template <class T>
     void BinaryTree<T>::postOrder() const
     {

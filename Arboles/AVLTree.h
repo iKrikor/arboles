@@ -133,6 +133,7 @@ void AVLTree<T>::insert(BNode<T> * parent, BNode<T> * node){
     if (this->empty())
     {
         this->setRoot(node);
+
     }
     else
     {
@@ -143,10 +144,11 @@ void AVLTree<T>::insert(BNode<T> * parent, BNode<T> * node){
             {
                 parent->setLeft(node);
                 node->setParent(parent);
+
             }
             else
             {
-                insert(parent->getLeft(), node);
+                 insert(parent->getLeft(), node);
             }
         }
         else if(node->getInfo() > parent->getInfo())
@@ -155,6 +157,7 @@ void AVLTree<T>::insert(BNode<T> * parent, BNode<T> * node){
             {
                 parent->setRight(node);
                 node->setParent(parent);
+
             }
             else
             {
@@ -190,7 +193,7 @@ void AVLTree<T>::insert(BNode<T> * parent, BNode<T> * node){
 template <class T>
 void AVLTree<T>::insert(T value){
     BNode<T> * node = new BNode<T>(value);
-    insert(this->root, node);
+     insert(this->root, node);
 }
 
 template <class T>
